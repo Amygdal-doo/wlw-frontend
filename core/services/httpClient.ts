@@ -6,7 +6,7 @@ export abstract class HttpClient {
   public static getInstance(): AxiosInstance {
     if (!HttpClient.instance) {
       HttpClient.instance = axios.create({
-        baseURL: "https://wlw-backend-production.up.railway.app/api/",
+        baseURL: process.env.REMIX_PUBLIC_URL,
         timeout: 120000,
       });
     }

@@ -12,7 +12,7 @@ const isJSON = (item: string) => {
 
 const getItemFromLocalStorage = <T>(key: LOCAL_STORAGE): T | null => {
   try {
-    const item = window.localStorage.getItem(key);
+    const item = window && window.localStorage.getItem(key);
 
     if (item !== null) {
       // If the item is valid JSON, parse it, otherwise return it as a string

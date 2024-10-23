@@ -56,7 +56,7 @@ export function ChatForm() {
               <FormControl>
                 <Input
                   className="w-full"
-                  placeholder="type here..."
+                  placeholder="Type here..."
                   {...field}
                 />
               </FormControl>

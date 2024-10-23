@@ -1,13 +1,14 @@
+import { AxiosResponse } from "axios";
+import { apiService } from "core/services/apiService";
+import { SaveIcon } from "lucide-react";
+import Markdown from 'markdown-to-jsx';
 import { useChat } from "providers/ChatProvider";
+import { useIdeas } from "providers/IdeasProvider";
+import { useState } from "react";
 import { Button } from "../button";
 import { ScrollArea } from "../scroll-area";
 import { SidebarTrigger } from "../sidebar";
 import { ChatForm } from "./ChatForm";
-import { SaveIcon } from "lucide-react";
-import { AxiosResponse } from "axios";
-import { apiService } from "core/services/apiService";
-import { useIdeas } from "providers/IdeasProvider";
-import { useState } from "react";
 
 const ChatContainer = () => {
   const { messages, setMessages } = useChat();
@@ -64,7 +65,7 @@ const ChatContainer = () => {
         </Button>
       </div>
       <div className="w-full flex justify-center border-y px-5">
-        <ScrollArea className="h-[80vh] w-full max-w-xl">
+        <ScrollArea className="h-[80vh] w-full max-w-2xl">
           <div className="py-5">
             {messages.map((message, index) => (
               <div
@@ -91,7 +92,7 @@ const ChatContainer = () => {
                     message.role === "user" ? "font-medium" : "px-5 pb-5"
                   }`}
                 >
-                  {message.content}
+                  <Markdown>{message.content}</Markdown>
                 </p>
               </div>
             ))}

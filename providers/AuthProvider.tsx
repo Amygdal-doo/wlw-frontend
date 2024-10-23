@@ -1,19 +1,19 @@
+import { useNavigate } from "@remix-run/react";
+import { AxiosResponse } from "axios";
+import useToken from "core/hooks/useToken";
+import { IToken } from "core/interfaces/token.interface";
+import { IUser } from "core/interfaces/user.interface";
+import { tokenService } from "core/services/tokenService";
+import clearLocalStorage from "core/utils/clearLocalStorage";
 import {
   createContext,
   FC,
   PropsWithChildren,
   useContext,
-  useState,
   useEffect,
+  useState,
 } from "react";
-import { AxiosResponse } from "axios";
 import { apiService } from "../core/services/apiService";
-import { IUser } from "core/interfaces/user.interface";
-import useToken from "core/hooks/useToken";
-import { IToken } from "core/interfaces/token.interface";
-import { tokenService } from "core/services/tokenService";
-import clearLocalStorage from "core/utils/clearLocalStorage";
-import { useNavigate } from "@remix-run/react";
 
 interface IAuthContextProps {
   user: IUser | null;
