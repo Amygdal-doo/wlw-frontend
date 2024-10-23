@@ -13,8 +13,8 @@ import {
   FormMessage,
 } from "components/ui/form";
 import { Input } from "components/ui/input";
-import { ArrowUp } from "lucide-react";
-import axios from "axios";
+import { ArrowUp, Loader2 } from "lucide-react";
+import { useChat } from "providers/ChatProvider";
 
 // Zod schema
 const FormSchema = z.object({
@@ -25,6 +25,7 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 export function ChatForm() {
+  const { sendMessage, loading } = useChat();
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -35,19 +36,10 @@ export function ChatForm() {
   async function onSubmit(data: FormSchemaType) {
     console.log("data", data);
 
-    const chatId = "6717b055c6b9ab19b998a8d7"; // Replace this with the actual chat ID.
-    const url = `https://wlw-backend-production.up.railway.app/api/chat/${chatId}`;
+    const content = data.content || "";
 
-    try {
-      const response = await axios.post(url, {
-        messages: [],
-        message: { role: "user", content: data.content || "" },
-      });
-
-      console.log("Success:", response.data);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    await sendMessage(content);
+    form.reset();
   }
 
   return (
@@ -78,7 +70,7 @@ export function ChatForm() {
           className="flex rounded-full justify-center font-semibold text-base border text-black bg-gray-300 hover:bg-black/[0.2]"
           type="submit"
         >
-          <ArrowUp />
+          {!loading ? <ArrowUp /> : <Loader2 className="animate-spin" />}
         </Button>
       </form>
     </Form>

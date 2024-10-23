@@ -15,7 +15,7 @@ import {
 } from "components/ui/form";
 import { Input } from "components/ui/input";
 import { useNavigate } from "@remix-run/react";
-// import { useAuth } from "providers/AuthProvider";
+import { useAuth } from "providers/AuthProvider";
 
 // Zod schema
 const FormSchema = z.object({
@@ -33,7 +33,7 @@ type FormSchemaType = z.infer<typeof FormSchema>;
 
 export function RegistrationForm() {
   const router = useNavigate();
-  // const { register } = useAuth();
+  const { register } = useAuth();
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -45,7 +45,7 @@ export function RegistrationForm() {
 
   function onSubmit(data: FormSchemaType) {
     console.log("data", data);
-    // register(data.email, data.password, data.username);
+    register(data.email, data.password, data.username);
     router("/");
   }
 
@@ -97,7 +97,7 @@ export function RegistrationForm() {
             className="w-full flex justify-center font-semibold text-base border text-black bg-gray-300 hover:bg-black/[0.2]"
             type="submit"
           >
-            Submit
+            Register
           </Button>
         </div>
       </form>

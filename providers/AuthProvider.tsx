@@ -62,7 +62,7 @@ export const AuthProvider: FC<PropsWithChildren<object>> = ({ children }) => {
       await fetchUser();
 
       // Redirect to home page
-      navigate("/");
+      navigate("/chat");
     } catch (error) {
       console.error("Login error:", error);
     } finally {
@@ -97,18 +97,15 @@ export const AuthProvider: FC<PropsWithChildren<object>> = ({ children }) => {
 
   // Fetch user information based on the current token
   const fetchUser = async () => {
-    console.log("token 1111", token);
-
     if (!token) return; // No token, exit early
 
     setLoading(true);
     try {
-      const response: AxiosResponse<IUser> = await apiService.get("user/me", {
+      const response: AxiosResponse<IUser> = await apiService.get("users/me", {
         headers: {
           Authorization: `Bearer ${token.accessToken}`,
         },
       });
-      console.log("token 22222", token);
       setUser(response.data); // Set user information
     } catch (error) {
       console.error("Fetch user error:", error);

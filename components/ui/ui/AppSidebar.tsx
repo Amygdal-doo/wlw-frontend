@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "@remix-run/react";
+import { Link } from "@remix-run/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,27 +20,16 @@ import {
 
 import { Brain, ChevronUp, MoreHorizontal } from "lucide-react";
 import { IIdea } from "core/interfaces/ideas.interface";
-
-// Menu items.
-// const items = [
-//   {
-//     title: "Idea",
-//     url: "#",
-//     icon: Brain,
-//   },
-//   {
-//     title: "Idea",
-//     url: "#",
-//     icon: Brain,
-//   },
-// ];
+import { useAuth } from "providers/AuthProvider";
+import { useIdeas } from "providers/IdeasProvider";
 
 interface AppSidebarProps {
   ideas: IIdea[];
 }
 
 const AppSidebar = ({ ideas }: AppSidebarProps) => {
-  const navigate = useNavigate();
+  const { logout, user } = useAuth();
+  const { deleteIdeaById } = useIdeas();
   return (
     <Sidebar>
       <SidebarContent>
@@ -65,7 +54,9 @@ const AppSidebar = ({ ideas }: AppSidebarProps) => {
                       </SidebarMenuAction>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent side="right" align="start">
-                      <DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => deleteIdeaById(idea._id)}
+                      >
                         <span>Delete Idea</span>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -82,7 +73,7 @@ const AppSidebar = ({ ideas }: AppSidebarProps) => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  Username
+                  {user?.username}
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -91,11 +82,11 @@ const AppSidebar = ({ ideas }: AppSidebarProps) => {
                 className="w-[--radix-popper-anchor-width]"
               >
                 <DropdownMenuItem>
-                  <span>Account</span>
+                  <span>{user?.email}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => {
-                    navigate("/");
+                    logout();
                   }}
                 >
                   <span>Sign out</span>

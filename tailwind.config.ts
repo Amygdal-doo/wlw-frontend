@@ -65,6 +65,19 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        keyframes: {
+          spin: {
+            from: {
+              transform: "rotate(0deg)",
+            },
+            to: {
+              transform: "rotate(360deg)",
+            },
+          },
+        },
+        animation: {
+          "animate-spin": "spin 1s linear infinite",
+        },
       },
     },
   },

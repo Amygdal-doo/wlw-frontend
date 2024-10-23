@@ -1,37 +1,19 @@
-import { LoaderFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { AxiosResponse } from "axios";
 import { SidebarProvider } from "components/ui/sidebar";
 import AppSidebar from "components/ui/ui/AppSidebar";
 import ChatContainer from "components/ui/ui/ChatContainer";
-import { IIdea } from "core/interfaces/ideas.interface";
-import { apiService } from "core/services/apiService";
-
-type LoaderData = {
-  ideas: IIdea[];
-};
-
-// Loader function to fetch ideas
-export const loader: LoaderFunction = async (): Promise<LoaderData> => {
-  try {
-    // Explicitly typing the API response as AxiosResponse<IIdea[]>
-    const response: AxiosResponse<IIdea[]> = await apiService.get("idea");
-
-    // Check if response exists and has data
-    if (!response || !response.data) {
-      throw new Error("Failed to fetch ideas");
-    }
-
-    // Return the ideas data
-    return { ideas: response.data }; // Correctly typed as IIdea[]
-  } catch (error) {
-    console.error("Error loading ideas:", error);
-    throw new Response("Failed to load ideas", { status: 500 });
-  }
-};
+import { useAuth } from "providers/AuthProvider";
+import { useIdeas } from "providers/IdeasProvider";
+import { useEffect } from "react";
 
 export default function ChatPage() {
-  const { ideas } = useLoaderData<LoaderData>();
+  const { ideas, fetchIdeaById } = useIdeas();
+  const { user } = useAuth();
+
+  // Fetch idea when the component is mounted
+  useEffect(() => {
+    fetchIdeaById(); // Call fetchIdeaById when the component mounts
+  }, [user]);
+
   return (
     <SidebarProvider>
       <AppSidebar ideas={ideas} />

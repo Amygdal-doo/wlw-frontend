@@ -15,11 +15,11 @@ import {
 } from "components/ui/form";
 import { Input } from "components/ui/input";
 import { useNavigate } from "@remix-run/react";
-// import { useAuth } from "providers/AuthProvider";
+import { useAuth } from "providers/AuthProvider";
 
 // Zod schema
 const FormSchema = z.object({
-  username: z.string().min(2, {
+  email: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
   password: z.string().min(6, {
@@ -32,19 +32,19 @@ type FormSchemaType = z.infer<typeof FormSchema>;
 
 export function LoginForm() {
   const router = useNavigate();
-  // const { login } = useAuth();
+  const { login } = useAuth();
 
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
 
   function onSubmit(data: FormSchemaType) {
     console.log("data", data);
-    // login(data.username, data.password);
+    login(data.email, data.password);
     router("/chat");
   }
 
@@ -53,10 +53,10 @@ export function LoginForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
         <FormField
           control={form.control}
-          name="username"
+          name="email"
           render={({ field }) => (
             <FormItem className="mt-2">
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input placeholder="shadcn" {...field} />
               </FormControl>
@@ -83,7 +83,7 @@ export function LoginForm() {
             className="w-full flex justify-center font-semibold text-base border text-black bg-gray-300 hover:bg-black/[0.2]"
             type="submit"
           >
-            Submit
+            Log in
           </Button>
         </div>
       </form>
