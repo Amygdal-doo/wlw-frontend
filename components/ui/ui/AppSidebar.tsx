@@ -42,7 +42,7 @@ const AppSidebar = ({ ideas }: AppSidebarProps) => {
               {ideas.map((idea) => (
                 <SidebarMenuItem key={idea._id}>
                   <SidebarMenuButton asChild>
-                    <Link to="/">
+                    <Link to={`/ideas/${idea._id}`}>
                       <Brain />
                       <span>{idea.content}</span>
                     </Link>

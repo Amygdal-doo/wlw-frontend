@@ -11,7 +11,7 @@ import { useState } from "react";
 
 const ChatContainer = () => {
   const { messages, setMessages } = useChat();
-  const { fetchIdeaById } = useIdeas();
+  const { fetchIdeas } = useIdeas();
 
   // Local state to track saved ideas for each message
   const [savedIdeas, setSavedIdeas] = useState<boolean[]>(
@@ -25,7 +25,7 @@ const ChatContainer = () => {
         content,
       };
       const response: AxiosResponse = await apiService.post("idea", data);
-      await fetchIdeaById();
+      await fetchIdeas();
 
       // Update local saved ideas state
       setSavedIdeas((prev) => {
@@ -64,7 +64,7 @@ const ChatContainer = () => {
         </Button>
       </div>
       <div className="w-full flex justify-center border-y px-5">
-        <ScrollArea className="h-[80vh] max-w-xl">
+        <ScrollArea className="h-[80vh] w-full max-w-xl">
           <div className="py-5">
             {messages.map((message, index) => (
               <div

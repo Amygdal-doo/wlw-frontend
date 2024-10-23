@@ -6,12 +6,11 @@ import { useIdeas } from "providers/IdeasProvider";
 import { useEffect } from "react";
 
 export default function ChatPage() {
-  const { ideas, fetchIdeaById } = useIdeas();
+  const { ideas, fetchIdeas } = useIdeas();
   const { user } = useAuth();
 
-  // Fetch idea when the component is mounted
   useEffect(() => {
-    fetchIdeaById(); // Call fetchIdeaById when the component mounts
+    fetchIdeas();
   }, [user]);
 
   return (
