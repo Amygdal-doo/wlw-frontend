@@ -56,9 +56,6 @@ export const AuthProvider: FC<PropsWithChildren<object>> = ({ children }) => {
       tokenService.token = userToken; // Use TokenService to store token in localStorage
       setToken(response.data); // Update useToken state
 
-      // Fetch the user data after login
-      console.log("token 0000", token);
-
       await fetchUser();
 
       // Redirect to home page

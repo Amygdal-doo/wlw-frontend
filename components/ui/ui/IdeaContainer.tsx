@@ -1,7 +1,7 @@
 import { useNavigate } from "@remix-run/react";
 import { IIdea } from "core/interfaces/ideas.interface";
 import { Trash2Icon } from "lucide-react";
-import Markdown from 'markdown-to-jsx';
+import Markdown from "markdown-to-jsx";
 import { useChat } from "providers/ChatProvider";
 import { useIdeas } from "providers/IdeasProvider";
 import { Button } from "../button";
@@ -47,9 +47,9 @@ const IdeaContainer = ({ idea }: IdeaContainerProps) => {
                 </Button>
               </div>
 
-              <p className="px-5 pb-5">
+              <div className="px-5 pb-5">
                 <Markdown>{idea.content}</Markdown>
-              </p>
+              </div>
             </div>
           </div>
         </ScrollArea>

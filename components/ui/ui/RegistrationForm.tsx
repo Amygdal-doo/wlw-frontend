@@ -44,7 +44,6 @@ export function RegistrationForm() {
   });
 
   function onSubmit(data: FormSchemaType) {
-    console.log("data", data);
     register(data.email, data.password, data.username);
     router("/");
   }

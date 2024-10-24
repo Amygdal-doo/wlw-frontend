@@ -1,7 +1,6 @@
-import { AxiosResponse } from "axios";
 import { apiService } from "core/services/apiService";
 import { SaveIcon } from "lucide-react";
-import Markdown from 'markdown-to-jsx';
+import Markdown from "markdown-to-jsx";
 import { useChat } from "providers/ChatProvider";
 import { useIdeas } from "providers/IdeasProvider";
 import { useState } from "react";
@@ -25,7 +24,7 @@ const ChatContainer = () => {
       const data = {
         content,
       };
-      const response: AxiosResponse = await apiService.post("idea", data);
+      await apiService.post("idea", data);
       await fetchIdeas();
 
       // Update local saved ideas state
@@ -34,8 +33,6 @@ const ChatContainer = () => {
         updated[index] = true; // Mark this idea as saved
         return updated;
       });
-
-      console.log("Idea saved successfully:", response.data);
     } catch (error) {
       console.error("Error saving idea:", error);
     }
@@ -87,13 +84,13 @@ const ChatContainer = () => {
                     </Button>
                   </div>
                 )}
-                <p
+                <div
                   className={` ${
                     message.role === "user" ? "font-medium" : "px-5 pb-5"
                   }`}
                 >
                   <Markdown>{message.content}</Markdown>
-                </p>
+                </div>
               </div>
             ))}
           </div>

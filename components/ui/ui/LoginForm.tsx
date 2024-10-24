@@ -43,7 +43,6 @@ export function LoginForm() {
   });
 
   function onSubmit(data: FormSchemaType) {
-    console.log("data", data);
     login(data.email, data.password);
     router("/chat");
   }

@@ -36,7 +36,6 @@ export const ChatProvider: FC<PropsWithChildren> = ({ children }) => {
         message: newMessage, // Include the new message
       });
 
-      console.log("chat response", response);
       //   // Assuming the response contains the assistant's reply and updated message history
       // Assuming the response contains the assistant's reply and updated message history
       const { messages: updatedMessages } = response.data;

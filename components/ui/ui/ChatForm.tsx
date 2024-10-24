@@ -34,8 +34,6 @@ export function ChatForm() {
   });
 
   async function onSubmit(data: FormSchemaType) {
-    console.log("data", data);
-
     const content = data.content || "";
 
     await sendMessage(content);
