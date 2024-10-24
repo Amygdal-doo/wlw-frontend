@@ -6,7 +6,7 @@ export abstract class HttpClient {
   public static getInstance(): AxiosInstance {
     if (!HttpClient.instance) {
       HttpClient.instance = axios.create({
-        baseURL: process.env.REMIX_PUBLIC_URL,
+        baseURL: import.meta.env.VITE_PUBLIC_URL,
         timeout: 120000,
       });
     }
