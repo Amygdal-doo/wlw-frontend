@@ -58,7 +58,7 @@ export function RegistrationForm() {
             <FormItem className="mt-2">
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="username" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

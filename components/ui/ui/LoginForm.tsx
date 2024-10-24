@@ -14,7 +14,6 @@ import {
   FormMessage,
 } from "components/ui/form";
 import { Input } from "components/ui/input";
-import { useNavigate } from "@remix-run/react";
 import { useAuth } from "providers/AuthProvider";
 
 // Zod schema
@@ -31,7 +30,6 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 export function LoginForm() {
-  const router = useNavigate();
   const { login } = useAuth();
 
   const form = useForm<FormSchemaType>({
@@ -44,7 +42,6 @@ export function LoginForm() {
 
   function onSubmit(data: FormSchemaType) {
     login(data.email, data.password);
-    router("/chat");
   }
 
   return (
@@ -57,7 +54,7 @@ export function LoginForm() {
             <FormItem className="mt-2">
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="username" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

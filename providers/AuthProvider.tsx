@@ -51,7 +51,6 @@ export const AuthProvider: FC<PropsWithChildren<object>> = ({ children }) => {
       });
 
       const userToken = response.data as IToken;
-
       // Store token using both tokenService and setToken
       tokenService.token = userToken; // Use TokenService to store token in localStorage
       setToken(response.data); // Update useToken state
