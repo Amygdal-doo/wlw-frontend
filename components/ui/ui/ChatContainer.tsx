@@ -8,10 +8,12 @@ import { Button } from "../button";
 import { ScrollArea } from "../scroll-area";
 import { SidebarTrigger } from "../sidebar";
 import { ChatForm } from "./ChatForm";
+import { useToast } from "hooks/use-toast";
 
 const ChatContainer = () => {
   const { messages, setMessages } = useChat();
   const { fetchIdeas } = useIdeas();
+  const { toast } = useToast();
 
   // Local state to track saved ideas for each message
   const [savedIdeas, setSavedIdeas] = useState<boolean[]>(
@@ -27,6 +29,12 @@ const ChatContainer = () => {
       await apiService.post("idea", data);
       await fetchIdeas();
 
+      toast({
+        variant: "success",
+        title: "Congratulations",
+        description: "You have successfully save your idea!",
+      });
+
       // Update local saved ideas state
       setSavedIdeas((prev) => {
         const updated = [...prev];
@@ -35,6 +43,11 @@ const ChatContainer = () => {
       });
     } catch (error) {
       console.error("Error saving idea:", error);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      });
     }
   };
 

@@ -9,6 +9,7 @@ import { AxiosResponse } from "axios";
 import { apiService } from "../core/services/apiService";
 import { IIdea } from "core/interfaces/ideas.interface";
 import { useAuth } from "./AuthProvider";
+import { useToast } from "hooks/use-toast";
 
 // Interface for the Ideas context
 interface IIdeasContext {
@@ -29,7 +30,7 @@ export const IdeasProvider: FC<PropsWithChildren> = ({ children }) => {
   const [singleIdea, setSingleIdea] = useState<IIdea | undefined>(); // Store the list of ideas
   const [loading, setLoading] = useState<boolean>(false); // Handles loading state
   const { user } = useAuth(); // Authenticated user from AuthProvider
-
+  const { toast } = useToast();
   // Function to fetch a single idea by its ID
   const fetchIdeas = async (): Promise<void> => {
     setLoading(true);
@@ -45,6 +46,11 @@ export const IdeasProvider: FC<PropsWithChildren> = ({ children }) => {
       }
     } catch (error) {
       console.error("Error fetching idea:", error);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      });
     } finally {
       setLoading(false);
     }
@@ -67,6 +73,11 @@ export const IdeasProvider: FC<PropsWithChildren> = ({ children }) => {
       }
     } catch (error) {
       console.error("Error fetching single idea:", error);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      });
     } finally {
       setLoading(false);
     }
@@ -82,6 +93,11 @@ export const IdeasProvider: FC<PropsWithChildren> = ({ children }) => {
       await fetchIdeas();
     } catch (error) {
       console.error("Error deleting idea:", error);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      });
     } finally {
       setLoading(false);
     }

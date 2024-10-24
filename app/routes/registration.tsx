@@ -1,6 +1,7 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { RegistrationForm } from "components/ui/ui/RegistrationForm";
+import { ROUTES } from "core/const/routes.enum";
 
 export const meta: MetaFunction = () => {
   return [
@@ -30,7 +31,7 @@ export default function Index() {
             <p className="font-semibold text-base text-black/[0.6]">
               Already have an account?{" "}
               <Link
-                to="/"
+                to={ROUTES.HOME}
                 className="text-gray-200 cursor-pointer hover:text-gray-700"
               >
                 Log in

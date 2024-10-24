@@ -14,6 +14,8 @@ import {
   useState,
 } from "react";
 import { apiService } from "../core/services/apiService";
+import { useToast } from "hooks/use-toast";
+import { ROUTES } from "core/const/routes.enum";
 
 interface IAuthContextProps {
   user: IUser | null;
@@ -37,6 +39,7 @@ export const AuthContext = createContext<IAuthContextProps>({
 // AuthProvider component
 export const AuthProvider: FC<PropsWithChildren<object>> = ({ children }) => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [user, setUser] = useState<IUser | null>(null);
   const { token, setToken } = useToken(); // Using the custom hook to manage token
   const [loading, setLoading] = useState<boolean>(false);
@@ -55,12 +58,23 @@ export const AuthProvider: FC<PropsWithChildren<object>> = ({ children }) => {
       tokenService.token = userToken; // Use TokenService to store token in localStorage
       setToken(response.data); // Update useToken state
 
+      toast({
+        variant: "success",
+        title: "Log in",
+        description: "You have successfully logged in!",
+      });
+
       await fetchUser();
 
       // Redirect to home page
-      navigate("/chat");
+      navigate(ROUTES.CHAT);
     } catch (error) {
       console.error("Login error:", error);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      });
     } finally {
       setLoading(false);
     }
@@ -75,8 +89,18 @@ export const AuthProvider: FC<PropsWithChildren<object>> = ({ children }) => {
     setLoading(true);
     try {
       await apiService.post("auth/register", { email, password, username });
+      toast({
+        variant: "success",
+        description: "Successfully registered! Log in for more information.",
+      });
+      navigate(ROUTES.HOME);
     } catch (error) {
       console.error("Registration error:", error);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      });
     } finally {
       setLoading(false);
     }
@@ -88,7 +112,12 @@ export const AuthProvider: FC<PropsWithChildren<object>> = ({ children }) => {
     setToken(null); // Clear token in local state
     tokenService.clear(); // Clear token in TokenService
     clearLocalStorage(); // Clear local storage if needed
-    navigate("/"); // Redirect to login
+    toast({
+      variant: "success",
+      title: "Log out",
+      description: "You have successfully logged out!",
+    });
+    navigate(ROUTES.HOME); // Redirect to login
   };
 
   // Fetch user information based on the current token
@@ -105,6 +134,11 @@ export const AuthProvider: FC<PropsWithChildren<object>> = ({ children }) => {
       setUser(response.data); // Set user information
     } catch (error) {
       console.error("Fetch user error:", error);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      });
       logout(); // Logout if there's an error fetching user data
     } finally {
       setLoading(false);

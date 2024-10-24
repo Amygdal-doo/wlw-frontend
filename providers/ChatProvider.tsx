@@ -8,6 +8,7 @@ import {
 import { AxiosResponse } from "axios";
 import { apiService } from "../core/services/apiService";
 import { IMessage } from "core/interfaces/message.interface";
+import { useToast } from "hooks/use-toast";
 
 interface IChatContext {
   messages: IMessage[];
@@ -21,7 +22,7 @@ const ChatContext = createContext<IChatContext | undefined>(undefined);
 export const ChatProvider: FC<PropsWithChildren> = ({ children }) => {
   const [messages, setMessages] = useState<IMessage[]>([]); // Stores all messages
   const [loading, setLoading] = useState<boolean>(false); // Handles loading state during message posting
-
+  const { toast } = useToast();
   // Function to send a message
   const sendMessage = async (content: string) => {
     setLoading(true);
@@ -44,6 +45,11 @@ export const ChatProvider: FC<PropsWithChildren> = ({ children }) => {
       setMessages(updatedMessages); // Set the messages from the response
     } catch (error) {
       console.error("Error sending message:", error);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      });
     } finally {
       setLoading(false);
     }

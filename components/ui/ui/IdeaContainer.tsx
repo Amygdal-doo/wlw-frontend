@@ -7,6 +7,7 @@ import { useIdeas } from "providers/IdeasProvider";
 import { Button } from "../button";
 import { ScrollArea } from "../scroll-area";
 import { SidebarTrigger } from "../sidebar";
+import { ROUTES } from "core/const/routes.enum";
 interface IdeaContainerProps {
   idea: IIdea;
 }
@@ -22,7 +23,7 @@ const IdeaContainer = ({ idea }: IdeaContainerProps) => {
         <Button
           onClick={() => {
             setMessages([]);
-            navigate("/chat");
+            navigate(ROUTES.CHAT);
           }}
           size="lg"
           className="flex justify-center font-semibold text-base border text-black bg-gray-300 hover:bg-black/[0.2]"
@@ -40,7 +41,7 @@ const IdeaContainer = ({ idea }: IdeaContainerProps) => {
                   size="icon"
                   onClick={() => {
                     deleteIdeaById(idea._id);
-                    navigate("/chat");
+                    navigate(ROUTES.CHAT);
                   }}
                 >
                   <Trash2Icon />

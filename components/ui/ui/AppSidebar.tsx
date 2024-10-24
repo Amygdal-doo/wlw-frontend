@@ -22,6 +22,7 @@ import { Brain, ChevronUp, MoreHorizontal } from "lucide-react";
 import { IIdea } from "core/interfaces/ideas.interface";
 import { useAuth } from "providers/AuthProvider";
 import { useIdeas } from "providers/IdeasProvider";
+import { ROUTES } from "core/const/routes.enum";
 
 interface AppSidebarProps {
   ideas: IIdea[];
@@ -35,14 +36,14 @@ const AppSidebar = ({ ideas }: AppSidebarProps) => {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="h-[8vh] bg-gray-300 px-5">
-            Chat AI
+            <Link to={ROUTES.CHAT}> Chat AI</Link>
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {ideas.map((idea) => (
                 <SidebarMenuItem key={idea._id}>
                   <SidebarMenuButton asChild>
-                    <Link to={`/ideas/${idea._id}`}>
+                    <Link to={`${ROUTES.IDEAS}/${idea._id}`}>
                       <Brain />
                       <span>{idea.content}</span>
                     </Link>
