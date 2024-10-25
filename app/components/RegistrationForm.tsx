@@ -15,6 +15,8 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { useAuth } from "providers/AuthProvider";
+import { useState } from "react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 // Zod schema
 const FormSchema = z.object({
@@ -31,6 +33,7 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 export function RegistrationForm() {
+  const [showPassword, setShowPassword] = useState(false);
   const { register } = useAuth();
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
@@ -40,6 +43,10 @@ export function RegistrationForm() {
       password: "",
     },
   });
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   function onSubmit(data: FormSchemaType) {
     register(data.email, data.password, data.username);
@@ -80,8 +87,24 @@ export function RegistrationForm() {
           render={({ field }) => (
             <FormItem className="mt-2">
               <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="password" {...field} />
+              <FormControl className="relative">
+                <div>
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="password"
+                    {...field}
+                    className="pr-10"
+                  />
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute right-0 top-1/2 transform border-y border-r rounded-l-none -translate-y-1/2"
+                  >
+                    {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                  </Button>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

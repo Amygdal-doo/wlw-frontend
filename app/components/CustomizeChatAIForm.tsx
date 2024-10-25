@@ -23,18 +23,20 @@ import { useEffect } from "react";
 const FormSchema = z.object({
   howToAnswer: z
     .string()
-    .max(1000, { message: "Must be at most 1000 characters." })
-    .optional(), // Optional allows it to be empty
+    .max(1000, { message: "Must be at most 1000 characters." }),
   betterAnswers: z
     .string()
-    .max(1000, { message: "Must be at most 1000 characters." })
-    .optional(),
+    .max(1000, { message: "Must be at most 1000 characters." }),
 });
 
 // Infer the type from the schema
 type FormSchemaType = z.infer<typeof FormSchema>;
 
-export function CustomizeChatAIForm() {
+interface CustomizeChatAIFormProps {
+  closeModal: () => void;
+}
+
+export function CustomizeChatAIForm({ closeModal }: CustomizeChatAIFormProps) {
   const { toast } = useToast();
   const { instructions, fetchInstructions } = useSettings();
 
@@ -58,14 +60,16 @@ export function CustomizeChatAIForm() {
 
   async function onSubmit(data: FormSchemaType) {
     try {
-      apiService.patch("instructions", data);
-      await fetchInstructions();
-
-      toast({
-        variant: "success",
-        title: "Congratulations",
-        description: "You have successfully save your settings!",
-      });
+      const response = await apiService.patch("instructions", data);
+      if (response) {
+        toast({
+          variant: "success",
+          title: "Congratulations",
+          description: "You have successfully save your settings!",
+        });
+        await fetchInstructions();
+        closeModal();
+      }
     } catch (error) {
       console.error("Error saving settings:", error);
       toast({
@@ -110,15 +114,17 @@ export function CustomizeChatAIForm() {
         />
         <DialogFooter className="mt-8">
           <DialogClose asChild>
-            <Button type="button" variant="secondary">
+            <Button variant="outline" type="button">
               Cancel
             </Button>
           </DialogClose>
-          <DialogClose asChild>
-            <Button type="submit" variant="secondary">
-              Save
-            </Button>
-          </DialogClose>
+          <Button
+            className="border text-black bg-gray-300 hover:bg-black/[0.2]"
+            type="submit"
+            variant="secondary"
+          >
+            Save
+          </Button>
         </DialogFooter>
       </form>
     </Form>

@@ -15,12 +15,12 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { useAuth } from "providers/AuthProvider";
+import { useState } from "react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 // Zod schema
 const FormSchema = z.object({
-  email: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
+  email: z.string().email({ message: "Invalid email address" }),
   password: z.string().min(6, {
     message: "Password must be at least 6 characters.",
   }),
@@ -30,6 +30,8 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 export function LoginForm() {
+  const [showPassword, setShowPassword] = useState(false);
+
   const { login } = useAuth();
 
   const form = useForm<FormSchemaType>({
@@ -40,8 +42,12 @@ export function LoginForm() {
     },
   });
 
-  function onSubmit(data: FormSchemaType) {
-    login(data.email, data.password);
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+  async function onSubmit(data: FormSchemaType) {
+    await login(data.email, data.password);
   }
 
   return (
@@ -66,8 +72,24 @@ export function LoginForm() {
           render={({ field }) => (
             <FormItem className="mt-2">
               <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="password" {...field} />
+              <FormControl className="relative">
+                <div>
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="password"
+                    {...field}
+                    className="pr-10"
+                  />
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute right-0 top-1/2 transform border-y border-r rounded-l-none -translate-y-1/2"
+                  >
+                    {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                  </Button>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

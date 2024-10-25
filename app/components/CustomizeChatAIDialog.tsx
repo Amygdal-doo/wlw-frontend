@@ -9,11 +9,18 @@ import {
 } from "./ui/dialog";
 import { Separator } from "./ui/separator";
 import { CustomizeChatAIForm } from "./CustomizeChatAIForm";
+import { useState } from "react";
 
 export function CustomizeChatAIDialog() {
   const { fetchInstructions, instructions } = useSettings();
+  const [open, setOpen] = useState(false);
+
+  const closeModal = () => {
+    setOpen(false);
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           className="px-2 h-8 w-full py-1.5 flex justify-start text-sm text-popover-foreground font-normal"
@@ -32,7 +39,7 @@ export function CustomizeChatAIDialog() {
           <DialogTitle>Customize Chat AI</DialogTitle>
           <Separator />
         </DialogHeader>
-        <CustomizeChatAIForm />
+        <CustomizeChatAIForm closeModal={closeModal} />
       </DialogContent>
     </Dialog>
   );
