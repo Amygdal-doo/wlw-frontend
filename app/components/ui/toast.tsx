@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-"use client";
 
 import * as React from "react";
 import * as ToastPrimitives from "@radix-ui/react-toast";
@@ -52,6 +51,7 @@ const Toast = React.forwardRef<
       ref={ref}
       className={cn(toastVariants({ variant }), className)}
       {...props}
+      duration={3000}
     />
   );
 });

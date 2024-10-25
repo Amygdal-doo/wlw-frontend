@@ -1,10 +1,16 @@
-import { Link } from "@remix-run/react";
+import { Link, useNavigate, useParams } from "@remix-run/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../dropdown-menu";
+} from "./ui/dropdown-menu";
+
+import { Brain, ChevronUp, MoreHorizontal } from "lucide-react";
+import { IIdea } from "core/interfaces/ideas.interface";
+import { useAuth } from "providers/AuthProvider";
+import { useIdeas } from "providers/IdeasProvider";
+import { ROUTES } from "core/const/routes.enum";
 import {
   Sidebar,
   SidebarContent,
@@ -16,13 +22,8 @@ import {
   SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "../sidebar";
-
-import { Brain, ChevronUp, MoreHorizontal } from "lucide-react";
-import { IIdea } from "core/interfaces/ideas.interface";
-import { useAuth } from "providers/AuthProvider";
-import { useIdeas } from "providers/IdeasProvider";
-import { ROUTES } from "core/const/routes.enum";
+} from "./ui/sidebar";
+import { CustomizeChatAIDialog } from "./CustomizeChatAIDialog";
 
 interface AppSidebarProps {
   ideas: IIdea[];
@@ -31,13 +32,17 @@ interface AppSidebarProps {
 const AppSidebar = ({ ideas }: AppSidebarProps) => {
   const { logout, user } = useAuth();
   const { deleteIdeaById } = useIdeas();
+  const params = useParams();
+  const navigate = useNavigate();
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="h-[8vh] bg-gray-300 px-5">
-            <Link to={ROUTES.CHAT}> Chat AI</Link>
-          </SidebarGroupLabel>
+          <Link to={ROUTES.CHAT}>
+            <SidebarGroupLabel className="h-[8vh] bg-gray-300 px-5">
+              Chat AI
+            </SidebarGroupLabel>
+          </Link>
           <SidebarGroupContent>
             <SidebarMenu>
               {ideas.map((idea) => (
@@ -45,7 +50,7 @@ const AppSidebar = ({ ideas }: AppSidebarProps) => {
                   <SidebarMenuButton asChild>
                     <Link to={`${ROUTES.IDEAS}/${idea._id}`}>
                       <Brain />
-                      <span>{idea.content}</span>
+                      <span>{idea.messages[0].content}</span>
                     </Link>
                   </SidebarMenuButton>
                   <DropdownMenu>
@@ -56,7 +61,12 @@ const AppSidebar = ({ ideas }: AppSidebarProps) => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent side="right" align="start">
                       <DropdownMenuItem
-                        onClick={() => deleteIdeaById(idea._id)}
+                        onClick={async () => {
+                          await deleteIdeaById(idea._id);
+                          if (params.idea) {
+                            await navigate(ROUTES.CHAT);
+                          }
+                        }}
                       >
                         <span>Delete Idea</span>
                       </DropdownMenuItem>
@@ -85,6 +95,7 @@ const AppSidebar = ({ ideas }: AppSidebarProps) => {
                 <DropdownMenuItem>
                   <span>{user?.email}</span>
                 </DropdownMenuItem>
+                <CustomizeChatAIDialog />
                 <DropdownMenuItem
                   onClick={() => {
                     logout();

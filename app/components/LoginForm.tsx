@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "components/ui/button";
+import { Button } from "./ui/button";
 import {
   Form,
   FormControl,
@@ -12,16 +12,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "components/ui/form";
-import { Input } from "components/ui/input";
+} from "./ui/form";
+import { Input } from "./ui/input";
 import { useAuth } from "providers/AuthProvider";
 
 // Zod schema
 const FormSchema = z.object({
-  username: z.string().min(2, {
+  email: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-  email: z.string().email({ message: "Invalid email address" }),
   password: z.string().min(6, {
     message: "Password must be at least 6 characters.",
   }),
@@ -30,19 +29,19 @@ const FormSchema = z.object({
 // Infer the type from the schema
 type FormSchemaType = z.infer<typeof FormSchema>;
 
-export function RegistrationForm() {
-  const { register } = useAuth();
+export function LoginForm() {
+  const { login } = useAuth();
+
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      username: "",
       email: "",
       password: "",
     },
   });
 
   function onSubmit(data: FormSchemaType) {
-    register(data.email, data.password, data.username);
+    login(data.email, data.password);
   }
 
   return (
@@ -50,25 +49,12 @@ export function RegistrationForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
         <FormField
           control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem className="mt-2">
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="username" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem className="mt-2">
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="email@example.com" {...field} />
+                <Input placeholder="username" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -93,7 +79,7 @@ export function RegistrationForm() {
             className="w-full flex justify-center font-semibold text-base border text-black bg-gray-300 hover:bg-black/[0.2]"
             type="submit"
           >
-            Register
+            Log in
           </Button>
         </div>
       </form>

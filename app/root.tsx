@@ -11,7 +11,8 @@ import "./tailwind.css";
 import { AuthProvider } from "providers/AuthProvider";
 import { ChatProvider } from "providers/ChatProvider";
 import { IdeasProvider } from "providers/IdeasProvider";
-import { Toaster } from "components/ui/toaster";
+import { Toaster } from "./components/ui/toaster";
+import { SettingsProvider } from "providers/SettingsProvider";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -39,7 +40,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <AuthProvider>
           <IdeasProvider>
             <ChatProvider>
-              {children}
+              <SettingsProvider>{children}</SettingsProvider>
               <ScrollRestoration />
               <Scripts />
             </ChatProvider>

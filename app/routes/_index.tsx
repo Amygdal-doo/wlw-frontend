@@ -1,6 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
-import { LoginForm } from "components/ui/ui/LoginForm";
+import { LoginForm } from "~/components/LoginForm";
 import { ROUTES } from "core/const/routes.enum";
 import { Suspense } from "react";
 

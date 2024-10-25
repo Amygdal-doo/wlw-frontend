@@ -1,6 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
-import { RegistrationForm } from "components/ui/ui/RegistrationForm";
+import { RegistrationForm } from "~/components/RegistrationForm";
 import { ROUTES } from "core/const/routes.enum";
 
 export const meta: MetaFunction = () => {

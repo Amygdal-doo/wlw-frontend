@@ -1,9 +1,9 @@
-import { IUser } from "./user.interface";
+import { IMessage } from "./message.interface";
 
 export interface IIdea {
   _id: string;
-  content: string;
-  user: IUser;
+  messages: IMessage[];
   createdAt: string;
   updatedAt: string;
+  userId: string;
 }

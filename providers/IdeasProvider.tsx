@@ -38,7 +38,9 @@ export const IdeasProvider: FC<PropsWithChildren> = ({ children }) => {
     try {
       // Fetch the idea from the API using the provided ID
       if (user) {
-        const response: AxiosResponse<IIdea[]> = await apiService.get(`idea`);
+        const response: AxiosResponse<IIdea[]> = await apiService.get(
+          `chat/history`
+        );
 
         if (response) {
           setIdeas(response.data); // Set the ideas data
@@ -64,7 +66,7 @@ export const IdeasProvider: FC<PropsWithChildren> = ({ children }) => {
       // Fetch the idea from the API using the provided ID
       if (user) {
         const response: AxiosResponse<IIdea> = await apiService.get(
-          `idea/${id}`
+          `chat/one/${id}`
         );
 
         if (response) {
@@ -88,7 +90,7 @@ export const IdeasProvider: FC<PropsWithChildren> = ({ children }) => {
     setLoading(true);
     try {
       // Send DELETE request to the API
-      await apiService.delete(`idea/${id}`);
+      await apiService.delete(`chat/${id}`);
 
       await fetchIdeas();
     } catch (error) {
